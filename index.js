@@ -5,6 +5,9 @@ const axios = require("axios");
 const app = express();
 const PORT = 3000;
 
+const cors = require("cors");
+app.use(cors());
+
 // Route for email lookup
 app.get("/email/:email", async (req, res) => {
   const email = req.params.email;

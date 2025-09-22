@@ -5,16 +5,17 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
-  const [results, setResults] = useState(null);
+  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSearch = async (input) => {
     setLoading(true);
     setError("");
-    setResults(null);
+    setResult(null);
 
     try {
+      // Use phone or email route depending on input
       let endpoint = "";
       if (input.includes("@")) {
         endpoint = `http://localhost:3000/email/${input}`;
@@ -23,7 +24,7 @@ function App() {
       }
 
       const res = await axios.get(endpoint);
-      setResults(res.data);
+      setResult(res.data); // store actual JSON from backend
     } catch (err) {
       setError(err.response?.data?.error || "Something went wrong");
     } finally {
@@ -32,12 +33,12 @@ function App() {
   };
 
   return (
-    <div style={{ padding: "40px", fontFamily: "Arial" }}>
-      <h1>OSINT Email & Phone Tracker</h1>
+    <div className="App">
+      <h1>Email & Phone Tracker</h1>
       <SearchForm onSearch={handleSearch} />
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {results && <ResultCard title="Results" data={results} />}
+      {loading && <p style={{ textAlign: "center" }}>Loading...</p>}
+      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+      {result && <ResultCard data={result} />}
     </div>
   );
 }
